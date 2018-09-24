@@ -52,13 +52,11 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             newPhone = prev.getStringExtra("phone");
             Toast toast = Toast.makeText(getApplicationContext(), "Изменения отменены", Toast.LENGTH_SHORT);
             toast.show();
-        }
-        else
-            {
+        } else {
             newName = etName.getText().toString();
             newEmail = etEmail.getText().toString();
             newPhone = etPhone.getText().toString();
-            Toast toast = Toast.makeText(getApplicationContext(),"Данные изменены", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Данные изменены", Toast.LENGTH_SHORT);
             toast.show();
         }
 
