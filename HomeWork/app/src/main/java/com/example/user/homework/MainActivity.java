@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvName;
     TextView tvEmail;
     TextView tvPhone;
+    static final int SET_DATA = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvName.setText(intent.getStringExtra("name"));
         tvEmail.setText(intent.getStringExtra("email"));
         tvPhone.setText(intent.getStringExtra("phone"));
-
         btnEdit = findViewById(R.id.btn_edit);
         btnEdit.setOnClickListener(this);
 
@@ -40,16 +40,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if (v.getId()!=R.id.btn_browser) {
-            Intent intent = new Intent(this, EditActivity.class);
-            intent.putExtra("name", tvName.getText().toString());
-            intent.putExtra("email", tvEmail.getText().toString());
-            intent.putExtra("phone", tvPhone.getText().toString());
-            startActivity(intent);
+        Intent intent = new Intent(this, EditActivity.class);
+        if (v.getId() != R.id.btn_browser) {
+            startActivityForResult(intent, SET_DATA);
         } else {
             Uri webpage = Uri.parse("https://yandex.ru/");
             Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
             startActivity(webIntent);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == SET_DATA) {
+            data.putExtra("name", tvName.getText().toString());
+            data.putExtra("email", tvEmail.getText().toString());
+            data.putExtra("phone", tvPhone.getText().toString());
         }
     }
 }
