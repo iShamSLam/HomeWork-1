@@ -1,60 +1,90 @@
 package com.example.user.homework;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnEdit;
-    Button btnBrowser;
-    TextView tvName;
-    TextView tvEmail;
-    TextView tvPhone;
-    static final int SET_DATA = 1;
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+    public static TextView nh_log;
+    public static TextView nh_email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        tvName = findViewById(R.id.tv_name);
-        tvEmail = findViewById(R.id.tv_email);
-        tvPhone = findViewById(R.id.tv_phone);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        Intent intent = getIntent();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        nh_log = header.findViewById(R.id.nh_log);
+        nh_email = header.findViewById(R.id.nh_email);
 
-        tvName.setText(intent.getStringExtra("name"));
-        tvEmail.setText(intent.getStringExtra("email"));
-        tvPhone.setText(intent.getStringExtra("phone"));
-        btnEdit = findViewById(R.id.btn_edit);
-        btnEdit.setOnClickListener(this);
-
-        btnBrowser = findViewById(R.id.btn_browser);
-        btnBrowser.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(this, EditActivity.class);
-        if (v.getId() != R.id.btn_browser) {
-            startActivityForResult(intent, SET_DATA);
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            Uri webpage = Uri.parse("https://yandex.ru/");
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, webpage);
-            startActivity(webIntent);
+            super.onBackPressed();
         }
     }
+
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == SET_DATA) {
-            data.putExtra("name", tvName.getText().toString());
-            data.putExtra("email", tvEmail.getText().toString());
-            data.putExtra("phone", tvPhone.getText().toString());
+    public boolean onNavigationItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.nav_say_hello: {
+                FragmentTransaction helloTrans = getSupportFragmentManager()
+                        .beginTransaction();
+                helloTrans.replace(R.id.fragm, new SayHelloFragment());
+                helloTrans.addToBackStack("back1");
+                helloTrans.commit();
+                break;
+            }
+            case R.id.nav_god_bless: {
+                FragmentTransaction blessTrans = getSupportFragmentManager()
+                        .beginTransaction();
+                blessTrans.replace(R.id.fragm, new SayGodBless());
+                blessTrans.addToBackStack("back2");
+                blessTrans.commit();
+                break;
+            }
+            case R.id.nav_set_data: {
+                FragmentTransaction profileTrans = getSupportFragmentManager()
+                        .beginTransaction();
+                profileTrans.replace(R.id.fragm, new ProfileFragment());
+                profileTrans.addToBackStack("back3");
+                profileTrans.commit();
+                break;
+            }
         }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
+
