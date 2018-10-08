@@ -3,6 +3,8 @@ package com.example.user.homework;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -49,17 +51,26 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView imageView;
         final TextView nameView, surnameView;
+        int id;
+        Drawable drawable;
 
         ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_pict);
             nameView = itemView.findViewById(R.id.name);
             surnameView = itemView.findViewById(R.id.surname);
+
             itemView.setOnClickListener(view -> {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, Information.class);
+                int j=0;
+                for (int i = 0; i < players.size(); i++) {
+                    if (nameView.getText() == players.get(i).getName())
+                        j = i;
+                }
                 intent.putExtra("name", nameView.getText());
                 intent.putExtra("surname", surnameView.getText());
+                intent.putExtra("id", players.get(j).getImage());
                 context.startActivity(intent);
             });
         }

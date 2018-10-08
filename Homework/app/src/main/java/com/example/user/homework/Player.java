@@ -4,8 +4,9 @@ public class Player {
     private String name;
     private String surname;
     private int image;
+    private int Id;
 
-    public Player(String name, String surname, int image) {
+    public Player(String name, String surname, int image ) {
         this.name = name;
         this.surname = surname;
         this.image = image;
