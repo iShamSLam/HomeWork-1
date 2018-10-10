@@ -1,25 +1,25 @@
 package com.example.user.homework;
 
-import android.content.Context;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Recycle extends Fragment {
 
-     List<Player> players = new ArrayList<>();
+    private Player_Adapter.ClickCallBack callback;
+    List<Player> players = new ArrayList<>();
+
+    public Recycle() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,20 +28,19 @@ public class Recycle extends Fragment {
                 container, false);
         setInitialData();
         RecyclerView recyclerView = view.findViewById(R.id.players);
-        RecyclerView.ItemDecoration itemDecoration =
-                new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-        RecyclerView.ItemDecoration itm =
-                new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL);
-        recyclerView.addItemDecoration(itemDecoration);
-        recyclerView.addItemDecoration(itm);
+        SpaceItemDecoration decoration = new SpaceItemDecoration(16);
+        recyclerView.addItemDecoration(decoration);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        Player_Adapter adapter = new Player_Adapter(getContext(), players);
+        Player_Adapter adapter = new Player_Adapter(players, () -> {
+            Intent intent = new Intent(getContext(),Information.class);
+            startActivity(intent);
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         return view;
-
     }
+
     private void setInitialData() {
 
         players.add(new Player("Кевин", "Гарнет", R.drawable.kevin));
@@ -55,5 +54,4 @@ public class Recycle extends Fragment {
         players.add(new Player("Шакил", "О'Нил", R.drawable.shq));
         players.add(new Player("Майл", "Джордан", R.drawable.michaeljordan));
     }
-
 }

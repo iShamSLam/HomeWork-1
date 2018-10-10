@@ -36,5 +36,3 @@ public class Player {
         this.image = image;
     }
 }
-
-

@@ -1,15 +1,9 @@
 package com.example.user.homework;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +14,20 @@ import android.widget.TextView;
 import java.util.List;
 
 public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHolder> {
-    private LayoutInflater inflater;
     private List<Player> players;
 
-    Player_Adapter(Context context, List<Player> players) {
+    Player_Adapter(List<Player> players, ClickCallBack clickCallBack) {
         this.players = players;
-        this.inflater = LayoutInflater.from(context);
+        this.callBack = clickCallBack;
     }
+
+    private ClickCallBack callBack;
 
     @NonNull
     @Override
     public Player_Adapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.single_item, parent, false);
+        Context context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.single_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -41,6 +37,7 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
         holder.imageView.setImageResource(player.getImage());
         holder.surnameView.setText(player.getSurname());
         holder.nameView.setText(player.getName());
+        holder.imageView.setOnClickListener(v -> holder.onClick(holder.itemView));
     }
 
     @Override
@@ -48,7 +45,7 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
         return players.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final ImageView imageView;
         final TextView nameView, surnameView;
         int id;
@@ -59,23 +56,24 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
             imageView = itemView.findViewById(R.id.iv_pict);
             nameView = itemView.findViewById(R.id.name);
             surnameView = itemView.findViewById(R.id.surname);
+        }
 
-            itemView.setOnClickListener(view -> {
-                Context context = view.getContext();
-                Intent intent = new Intent(context, Information.class);
-                int j=0;
-                for (int i = 0; i < players.size(); i++) {
-                    if (nameView.getText() == players.get(i).getName())
-                        j = i;
-                }
-                intent.putExtra("name", nameView.getText());
-                intent.putExtra("surname", surnameView.getText());
-                intent.putExtra("id", players.get(j).getImage());
-                context.startActivity(intent);
-            });
+        @Override
+        public void onClick(View view) {
+            Context context = view.getContext();
+            Intent intent = new Intent(context, Information.class);
+            int j = 0;
+            for (int i = 0; i < players.size(); i++) {
+                if (nameView.getText() == players.get(i).getName()) j = i;
+            }
+            intent.putExtra("name", nameView.getText());
+            intent.putExtra("surname", surnameView.getText());
+            intent.putExtra("id", players.get(j).getImage());
+            context.startActivity(intent);
         }
     }
+
+    interface ClickCallBack {
+        void onClick();
+    }
 }
-
-
-
