@@ -1,9 +1,10 @@
 package com.example.user.homework;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +12,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Comparator;
 import java.util.List;
 
+import static com.example.user.homework.RecycleViewFragment.DownSorter;
+
 public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHolder> {
-    private List<Player> players;
+    private static List<Player> players;
 
     Player_Adapter(List<Player> players, ClickCallBack clickCallBack) {
         this.players = players;
         this.callBack = clickCallBack;
     }
 
+    public static void SetData(List<Player> list)
+    {
+        Player_Adapter.players = list;
+    }
+
     private ClickCallBack callBack;
+    public static int currDataPos;
 
     @NonNull
     @Override
@@ -37,7 +47,28 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
         holder.imageView.setImageResource(player.getImage());
         holder.surnameView.setText(player.getSurname());
         holder.nameView.setText(player.getName());
-        holder.imageView.setOnClickListener(v -> holder.onClick(holder.itemView));
+        holder.cv.setOnClickListener(v -> {
+            currDataPos = player.getId();
+            callBack.onClick(player.getId());
+        });
+    }
+
+    public void UpdateUp(Comparator<Player> T1) {
+        List<Player> temp = RecycleViewFragment.UpSorter(T1);
+        PlayersListDiffCallBack diffCallBack =
+                new PlayersListDiffCallBack(players, temp);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallBack);
+        result.dispatchUpdatesTo(this);
+        players = temp;
+    }
+
+    public void UpdateDown(Comparator<Player> T1) {
+        List<Player> temp = DownSorter(T1);
+        PlayersListDiffCallBack diffCallBack =
+                new PlayersListDiffCallBack(players, temp);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallBack);
+        result.dispatchUpdatesTo(this);
+        players = temp;
     }
 
     @Override
@@ -45,35 +76,22 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
         return players.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
         final ImageView imageView;
+        final CardView cv;
         final TextView nameView, surnameView;
         int id;
         Drawable drawable;
-
         ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_pict);
             nameView = itemView.findViewById(R.id.name);
             surnameView = itemView.findViewById(R.id.surname);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Context context = view.getContext();
-            Intent intent = new Intent(context, Information.class);
-            int j = 0;
-            for (int i = 0; i < players.size(); i++) {
-                if (nameView.getText() == players.get(i).getName()) j = i;
-            }
-            intent.putExtra("name", nameView.getText());
-            intent.putExtra("surname", surnameView.getText());
-            intent.putExtra("id", players.get(j).getImage());
-            context.startActivity(intent);
+            cv = itemView.findViewById(R.id.cv);
         }
     }
 
-    interface ClickCallBack {
-        void onClick();
+    interface  ClickCallBack {
+        void onClick(int position);
     }
 }
