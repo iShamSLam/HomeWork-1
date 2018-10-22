@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HomeWork</string>
+    <string name="title_activity_awakening">AwakeningActivity</string>
 </resources>
