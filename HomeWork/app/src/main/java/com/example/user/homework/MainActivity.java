@@ -25,13 +25,13 @@ import static android.support.v4.content.WakefulBroadcastReceiver.startWakefulSe
 public class MainActivity extends AppCompatActivity {
 
     Button alarm_start, alarm_stop;
-    static TextView alarm_status;
+    TextView alarm_status;
     TimePicker timePicker;
-    public static AlarmManager alarmManager;
+    AlarmManager alarmManager;
     PendingIntent pendingIntent;
-    public static NotificationUtils mNotificationUtils;
-    public static PowerManager pm;
-    public static PowerManager.WakeLock wakeLock;
+    NotificationUtils mNotificationUtils;
+    PowerManager pm;
+    PowerManager.WakeLock wakeLock;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
             setTimeText("Будильник запущен на "
                     + String.valueOf(timePicker.getHour()
                     + ":" + minute));
-            Notification.Builder nb = MainActivity.mNotificationUtils.
+            Notification.Builder nb = mNotificationUtils.
                     getAndroidChannelNotification(alarm_status.getText().toString());
-            MainActivity.mNotificationUtils.getManager().notify(101, nb.build());
+            mNotificationUtils.getManager().notify(101, nb.build());
             alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         });
         alarm_stop.setOnClickListener(v -> {
