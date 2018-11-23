@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.user.homework.RecycleViewFragment.DownSorter;
+import static com.example.user.homework.RecycleViewFragment.Sorter1;
 
 public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHolder> {
     private static List<Player> players;
@@ -25,8 +25,7 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
         this.callBack = clickCallBack;
     }
 
-    public static void SetData(List<Player> list)
-    {
+    public static void SetData(List<Player> list) {
         Player_Adapter.players = list;
     }
 
@@ -54,7 +53,7 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
     }
 
     public void UpdateUp(Comparator<Player> T1) {
-        List<Player> temp = RecycleViewFragment.UpSorter(T1);
+        List<Player> temp = Sorter1(T1);
         PlayersListDiffCallBack diffCallBack =
                 new PlayersListDiffCallBack(players, temp);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallBack);
@@ -63,7 +62,7 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
     }
 
     public void UpdateDown(Comparator<Player> T1) {
-        List<Player> temp = DownSorter(T1);
+        List<Player> temp = Sorter1(T1);
         PlayersListDiffCallBack diffCallBack =
                 new PlayersListDiffCallBack(players, temp);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallBack);
@@ -76,12 +75,13 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
         return players.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView imageView;
         final CardView cv;
         final TextView nameView, surnameView;
         int id;
         Drawable drawable;
+
         ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.iv_pict);
@@ -91,7 +91,7 @@ public class Player_Adapter extends RecyclerView.Adapter<Player_Adapter.ViewHold
         }
     }
 
-    interface  ClickCallBack {
+    interface ClickCallBack {
         void onClick(int position);
     }
 }
