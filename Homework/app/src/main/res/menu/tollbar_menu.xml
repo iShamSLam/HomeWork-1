@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:yourapp="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_AZ_sort"
+        android:icon="@drawable/baseline_sort_by_alpha_black_18dp"
+        android:title="Sort by Name"
+        yourapp:showAsAction="always" />
+    <item
+        android:id="@+id/downSort"
+        android:icon="@drawable/baseline_trending_down_black_18dp"
+        android:title="Sort by down Height"
+        yourapp:showAsAction="always" />
+    <item
+        android:icon="@drawable/baseline_trending_up_black_18dp"
+        android:id="@+id/upSort"
+        android:title="Sort by up Height"
+        yourapp:showAsAction="always"/>
+
+</menu>
