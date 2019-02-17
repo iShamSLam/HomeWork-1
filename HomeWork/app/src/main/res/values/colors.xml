@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="md_red_500">#F44336</color>
+    <color name="md_red_700">#d32f2f</color>
+    <color name="md_lime_500">#cddc39</color>
+    <color name="md_lime_700">#afb42b</color>
+    <color name="md_amber_A400">#ffc400</color>
+    <color name="md_green_500">#4caf50</color>
+    <color name="md_green_700">#388e3c</color>
 </resources>
