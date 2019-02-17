@@ -10,6 +10,7 @@ import android.net.Uri;
 
 public class AlarmReceiverActivity extends BroadcastReceiver {
     public static Ringtone ringtone;
+    NotificationUtils mNotificationUtils;
 
     @Override
     public void onReceive(Context context, Intent intent) {

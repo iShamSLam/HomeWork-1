@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TimePicker timePicker;
     AlarmManager alarmManager;
     PendingIntent pendingIntent;
-    NotificationUtils mNotificationUtils;
+    static NotificationUtils mNotificationUtils;
     PowerManager pm;
     PowerManager.WakeLock wakeLock;
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         alarm_stop = findViewById(R.id.btn_alarm_stop);
         alarm_status = findViewById(R.id.tv_alarm_status);
         pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock((PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
+        wakeLock = pm.newWakeLock((PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "MyApp:wake");
         wakeLock.acquire();
         timePicker = findViewById(R.id.time_picker);
         Calendar calendar = Calendar.getInstance();
