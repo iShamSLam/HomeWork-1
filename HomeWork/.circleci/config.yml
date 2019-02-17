@@ -39,6 +39,7 @@ jobs:
         key: v1-dependencies-{{ checksum "build.gradle" }}
 
     # run tests!
-    test:
+   - run: gradle test
+   test:
   override:
     - echo "no tests"
